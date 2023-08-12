@@ -1,3 +1,71 @@
+# Basiq PHP API
+
+The Basiq PHP API is a library designed to simplify interaction with the Basiq REST API. It provides a common and simple interface for retrieving banking data, building budget apps, tracking spending, and more.
+
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Features](#features)
+- [Components](#components)
+- [Security Considerations](#security-considerations)
+- [Use Case Implementation](#use-case-implementation)
+- [Future Considerations](#future-considerations)
+- [Dependencies](#dependencies)
+
+## Installation
+
+Since the package is not published, you'll need to add the repository to your `composer.json` file and then require it using Composer.
+
+1. Add the repository to your `composer.json`:
+
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/thursdaybw/basiq-php-api"
+    }
+],
+```
+
+2. Run the Composer require command:
+
+```bash
+composer require thursdaybw/basiq-php-api
+```
+
+## Configuration
+
+Copy the `settings.default.php` file to `settings.php` and fill in the appropriate values:
+
+- `baseuri`: The base domain of the Basiq v3 API (e.g., `https://au.api.basiq.io`).
+- `userid`: The ID of the user in the "application" that the REST API pulls its data from.
+- `apikey`: The API key of the Basiq application behind the REST API.
+
+## Usage
+
+Refer to the `get_user.php` file for an example of how to use the Basiq PHP API to fetch a user's information. Here's a summary:
+
+1. Include dependencies and load settings from `settings.php`.
+2. Create a container using the `ContainerFactory`.
+3. Get the Basiq API services and fetch a user by ID.
+
+```php
+use basiqphpapi\ContainerFactory;
+require 'vendor/autoload.php';
+
+// Load settings
+$containerFactory = new ContainerFactory(require 'settings.php');
+$container = $containerFactory->createContainer();
+
+// Get services
+$basiqApi = $container->get('basiq.php.api.api');
+
+// Fetch user
+$user = $basiqApi->fetchUser($container->get('user_id'));
+print_r($user);
+```
+
 ### Introduction
 The Basiq PHP API is a library designed to simplify interaction with the Basiq REST API. It provides a common and simple interface for retrieving banking data, building budget apps, tracking spending, and more. The library takes care of token management, is configurable, and offers a simplified HTTP client interface.
 
