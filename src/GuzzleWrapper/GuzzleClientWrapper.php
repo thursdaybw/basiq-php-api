@@ -1,6 +1,6 @@
 <?php
 
-namespace App\BasiqApi\GuzzleWrapper;
+namespace BasiqPhpApi\GuzzleWrapper;
 
 use App\BasiqApi\HttpClient\HttpClientWrapperInterface;
 use GuzzleHttp\Client;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\BasiqApi\HttpClient;
+namespace BasiqPhpApi\HttpClient;
 
 /**
  * Interface HttpClientInterface.

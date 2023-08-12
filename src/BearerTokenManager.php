@@ -1,6 +1,6 @@
 <?php
 
-namespace App\BasiqApi;
+namespace BasiqPhpApi\BasiqApi;
 
 use App\BasiqApi\GuzzleWrapper\GuzzleClientWrapper;
 use GuzzleHttp\Exception\RequestException;

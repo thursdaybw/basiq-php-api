@@ -1,6 +1,6 @@
 <?php
 
-namespace App\BasiqApi;
+namespace BasiqPhpApi;
 
 use App\BasiqApi\HttpClient\HttpClientWrapperInterface;
 

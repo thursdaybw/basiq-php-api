@@ -1,6 +1,6 @@
 <?php
 
-namespace App\BasiqApi\GuzzleWrapper\Factory;
+namespace BasiqPhpApi\GuzzleWrapper\Factory;
 
 use App\BasiqApi\GuzzleWrapper\GuzzleClientWrapper;
 
