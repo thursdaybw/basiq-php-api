@@ -66,6 +66,10 @@ $user = $basiqApi->fetchUser($container->get('user_id'));
 print_r($user);
 ```
 
+https://showme.redstarplugin.com/s/FyNnPzTp
+
+[![](https://mermaid.ink/img/pako:eNqNkstuwjAQRX9l5BVI8ANZVMoLCvSlQiWkhMUoGYhFYkeOoxYh_r0TO12wQOrOnnPnXo_tqyh0SSIQJ4NtBbskVwBhFmtlUSoyB5jPnyDKwo_VYUCR28dZLiJCQ2anz6QgriUpmwsniZ0kyTx6RlXW7DOQxJGUm09kHZ5MYXQwhFZqNYNPOhrqKqlOo1_qupZDJHayCHtb-Tz4lrYCPhls6DKKl068YbH35XRIf1ppLpCgxTvLBasWsiaIsahoRAuHXv5lsGeVZ2N5_9jX38rKz_7VkZlMR7JyZM1kvX1_4_m7VquO_HSD8i9YzERDpkFZ8ntdh9Zc2Ioajgh4WaI55yJXN9Zhb_X2ogoRWNPTTPRtiZYSifzMzX0xLaXVRgRHrDsuktu--k_h_sbtF4Ptq-A?type=png)](https://mermaid.live/edit#pako:eNqNkstuwjAQRX9l5BVI8ANZVMoLCvSlQiWkhMUoGYhFYkeOoxYh_r0TO12wQOrOnnPnXo_tqyh0SSIQJ4NtBbskVwBhFmtlUSoyB5jPnyDKwo_VYUCR28dZLiJCQ2anz6QgriUpmwsniZ0kyTx6RlXW7DOQxJGUm09kHZ5MYXQwhFZqNYNPOhrqKqlOo1_qupZDJHayCHtb-Tz4lrYCPhls6DKKl068YbH35XRIf1ppLpCgxTvLBasWsiaIsahoRAuHXv5lsGeVZ2N5_9jX38rKz_7VkZlMR7JyZM1kvX1_4_m7VquO_HSD8i9YzERDpkFZ8ntdh9Zc2Ioajgh4WaI55yJXN9Zhb_X2ogoRWNPTTPRtiZYSifzMzX0xLaXVRgRHrDsuktu--k_h_sbtF4Ptq-A)
+
 ### Introduction
 The Basiq PHP API is a library designed to simplify interaction with the Basiq REST API. It provides a common and simple interface for retrieving banking data, building budget apps, tracking spending, and more. The library takes care of token management, is configurable, and offers a simplified HTTP client interface.
 
@@ -82,10 +86,6 @@ The Basiq PHP API is a library designed to simplify interaction with the Basiq R
 - **Bearer Token Manager**: Manages JWT tokens, including creation, refresh, and storage.
 - **Guzzle Wrappers**: Custom wrappers for Guzzle, including factories for basic auth and bearer token auth.
 - **HTTP Client Interface**: Defines a contract for HTTP clients, allowing for different implementations (e.g., CurlWrapper).
-
-https://showme.redstarplugin.com/s/FyNnPzTp
-
-[![](https://mermaid.ink/img/pako:eNqNkstuwjAQRX9l5BVI8ANZVMoLCvSlQiWkhMUoGYhFYkeOoxYh_r0TO12wQOrOnnPnXo_tqyh0SSIQJ4NtBbskVwBhFmtlUSoyB5jPnyDKwo_VYUCR28dZLiJCQ2anz6QgriUpmwsniZ0kyTx6RlXW7DOQxJGUm09kHZ5MYXQwhFZqNYNPOhrqKqlOo1_qupZDJHayCHtb-Tz4lrYCPhls6DKKl068YbH35XRIf1ppLpCgxTvLBasWsiaIsahoRAuHXv5lsGeVZ2N5_9jX38rKz_7VkZlMR7JyZM1kvX1_4_m7VquO_HSD8i9YzERDpkFZ8ntdh9Zc2Ioajgh4WaI55yJXN9Zhb_X2ogoRWNPTTPRtiZYSifzMzX0xLaXVRgRHrDsuktu--k_h_sbtF4Ptq-A?type=png)](https://mermaid.live/edit#pako:eNqNkstuwjAQRX9l5BVI8ANZVMoLCvSlQiWkhMUoGYhFYkeOoxYh_r0TO12wQOrOnnPnXo_tqyh0SSIQJ4NtBbskVwBhFmtlUSoyB5jPnyDKwo_VYUCR28dZLiJCQ2anz6QgriUpmwsniZ0kyTx6RlXW7DOQxJGUm09kHZ5MYXQwhFZqNYNPOhrqKqlOo1_qupZDJHayCHtb-Tz4lrYCPhls6DKKl068YbH35XRIf1ppLpCgxTvLBasWsiaIsahoRAuHXv5lsGeVZ2N5_9jX38rKz_7VkZlMR7JyZM1kvX1_4_m7VquO_HSD8i9YzERDpkFZ8ntdh9Zc2Ioajgh4WaI55yJXN9Zhb_X2ogoRWNPTTPRtiZYSifzMzX0xLaXVRgRHrDsuktu--k_h_sbtF4Ptq-A)
 
 ### Security Considerations
 - Retrieves data from the sandbox using HTTPS.
