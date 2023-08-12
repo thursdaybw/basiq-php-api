@@ -8,5 +8,5 @@ return [
     'user_id' => 'your user\'s id',
 
     // 'The API Key of the Basiq Application behind teh REST API, this is where you user data is.',
-    'basiq_api_key' => 'you application api key',
+    'api_key' => 'you application api key',
 ];

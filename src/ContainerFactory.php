@@ -23,12 +23,12 @@ class ContainerFactory
             // Parameters
             'base_uri' => $settings['base_uri'],
             'user_id' => $settings['user_id'],
-            'basiq_api_key' => $settings['basiq_api_key'],
+            'api_key' => $settings['api_key'],
 
             // Guzzle Factories
             'BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory' => \DI\create()
                 // Pass API Key.
-                ->constructor(\DI\get('basiq_api_key')),
+                ->constructor(\DI\get('api_key')),
 
             'BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory' => \DI\create()
                 // Pass BearerTokenManager as token handler
