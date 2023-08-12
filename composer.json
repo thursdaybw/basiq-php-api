@@ -1,5 +1,9 @@
 {
+    "name": "thursdaybw/basiq-php-api",
+    "description": "PHP API For Basiq.",
+    "type": "library",
     "require": {
+        "php": ">=8.1",
         "php-di/php-di": "^7.0",
         "monolog/monolog": "^3.4",
         "guzzlehttp/guzzle": "^7.7"
