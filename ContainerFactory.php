@@ -9,37 +9,42 @@ use DI\ContainerBuilder;
 class ContainerFactory
 {
 
-    public function __construct($basic_application_environment = "sandbox")
-    {
-        $this->basic_application_environment = $basic_application_environment;
+    public function __construct(array $settings) {
+        $this->settings = $settings;
     }
 
     public function createContainer() {
 
-        // Include the settings file with secrets
-        require 'settings.php';
-
         $builder = new ContainerBuilder();
+
+        // Use the settings from the constructor
+        $settings = $this->settings;
 
         $builder->addDefinitions([
             // Parameters
-            'base_uri' => 'https://au-api.basiq.io',
-            'user_id' => BASIC_TEST_USER_ID,
-            'basiq_api_key' => BASIQ_API_KEY,
+            'base_uri' => $settings['base_uri'],
+            'user_id' => $settings['user_id'],
+            'basiq_api_key' => $settings['basiq_api_key'],
 
             // Guzzle Factories
-            'BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory' => \DI\create(),
+            'BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory' => \DI\create()
+                // Pass API Key.
+                ->constructor(\DI\get('basiq_api_key')),
+
             'BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory' => \DI\create()
-                ->constructor(\DI\get('BasiqPhpApi\BearerTokenManager')), // Pass BearerTokenManager as token handler
+                // Pass BearerTokenManager as token handler
+                ->constructor(\DI\get('BasiqPhpApi\BearerTokenManager')),
 
             // Basic Auth Client
             'BasiqPhpApi\GuzzleWrapper\BasicAuthClient' => \DI\factory(function ($container) {
-                return $container->get('BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory')->createClient($container->get('base_uri'));
+                return $container->get('BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory')
+                    ->createClient($container->get('base_uri'));
             }),
 
             // Bearer Token Client
             'BasiqPhpApi\GuzzleWrapper\BearerTokenClient' => \DI\factory(function ($container) {
-                return $container->get('BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory')->createClient($container->get('base_uri'));
+                return $container->get('BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory')
+                    ->createClient($container->get('base_uri'));
             }),
 
             // Bearer Token Manager
@@ -47,7 +52,7 @@ class ContainerFactory
                 ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BasicAuthClient')),
 
             // BasiqApi Clienhttps://github.com/thursdaybw/basiq-php-apit
-            'BasiqPhpApi\BasiqApi' => \DI\create()
+            'BasiqPhpApi\Api' => \DI\create()
                 ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BearerTokenClient')),
         ]);
 

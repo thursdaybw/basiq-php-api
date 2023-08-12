@@ -10,7 +10,7 @@ use BasiqPhpApi\HttpClient\HttpClientWrapperInterface;
  * This class provides methods to interact with the Basiq API, allowing
  * fetching of user data, accounts, and consents.
  */
-class BasiqApi {
+class Api {
 
   /**
    * BasiqApi constructor.

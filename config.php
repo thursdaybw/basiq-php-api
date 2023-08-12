@@ -30,7 +30,7 @@ $builder->addDefinitions([
         ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BasicAuthClient')),
 
     // BasiqApi Clienhttps://github.com/thursdaybw/basiq-php-apit
-    'BasiqPhpApi\BasiqApi' => \DI\create()
+    'BasiqPhpApi\Api' => \DI\create()
         ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BearerTokenClient')),
 ]);
 

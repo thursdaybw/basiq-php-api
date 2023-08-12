@@ -1,7 +1,12 @@
 <?php
 
-// The API KEY of the Basiq Application (that the REST API reads its data from).
-define('BASIQ_API_KEY', '');
+return [
+    // This is the base domain of the BasiqV3 API.
+    'base_uri' => 'https://au-api.basiq.io',
 
-// The ID of the user from th Basiq Application (that the REST API reads its data from).
-define('BASIC_TEST_USER_ID', '');
+    // ID of user who\'s data you wish to access',
+    'user_id' => 'your user\'s id',
+
+    // 'The API Key of the Basiq Application behind teh REST API, this is where you user data is.',
+    'basiq_api_key' => 'you application api key',
+];
