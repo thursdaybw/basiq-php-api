@@ -3,7 +3,6 @@
 // ContainerFactory.php
 namespace BasiqPhpApi;
 
-require 'vendor/autoload.php';
 use DI\ContainerBuilder;
 
 class ContainerFactory
