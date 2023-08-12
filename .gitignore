@@ -1,0 +1,32 @@
+# .gitignore
+
+# Ignore Composer's vendor directory
+/vendor/
+
+# Ignore environment variables
+.env
+
+# Ignore IDE specific files
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vscode/
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore node modules
+node_modules/
+
+# Ignore cache and logs
+cache/*
+logs/*
+
+# Ignore build artifacts, compiled files and binaries
+/build/
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
