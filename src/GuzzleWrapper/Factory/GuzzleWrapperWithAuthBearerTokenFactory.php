@@ -2,9 +2,9 @@
 
 namespace BasiqPhpApi\GuzzleWrapper\Factory;
 
-use App\BasiqApi\BearerTokenManager;
-use App\BasiqApi\GuzzleWrapper\GuzzleClientWrapper;
-use App\BasiqApi\HttpClient\HttpClientWrapperInterface;
+use BasiqPhpApi\BearerTokenManager;
+use BasiqPhpApi\GuzzleWrapper\GuzzleClientWrapper;
+use BasiqPhpApi\HttpClient\HttpClientWrapperInterface;
 
 /**
  * Class BasiqHttpClientFactory.
@@ -17,7 +17,7 @@ class GuzzleWrapperWithAuthBearerTokenFactory implements GuzzleWrapperFactoryInt
   /**
    * BasiqHttpClientFactory constructor.
    *
-   * @param \App\BasiqApi\BearerTokenManager $tokenHandler
+   * @param \BasiqPhpApi\BearerTokenManager $tokenHandler
    *   Handler for managing JWT tokens for Basiq API authentication.
    */
   public function __construct(readonly BearerTokenManager $tokenHandler) {}
@@ -25,7 +25,7 @@ class GuzzleWrapperWithAuthBearerTokenFactory implements GuzzleWrapperFactoryInt
   /**
    * Creates an HTTP client for interacting with the Basiq API.
    *
-   * @return \App\BasiqApi\HttpClient\HttpClientWrapperInterface
+   * @return \BasiqPhpApi\HttpClient\HttpClientWrapperInterface
    *   The GuzzleWrapper configured with headers for Basiq API requests.
    */
   public function createClient(string $baseUri): HttpClientWrapperInterface {

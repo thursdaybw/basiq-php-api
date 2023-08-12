@@ -2,9 +2,7 @@
 
 namespace BasiqPhpApi\GuzzleWrapper\Factory;
 
-use App\BasiqApi\GuzzleWrapper\GuzzleClientWrapper;
-
-require_once __DIR__ . '/../../../../config.php';
+use BasiqPhpApi\GuzzleWrapper\GuzzleClientWrapper;
 
 /**
  * Class HttpApplicationWithAuthBasicFactory.
@@ -17,7 +15,7 @@ class GuzzleWrapperWithAuthBasicFactory implements GuzzleWrapperFactoryInterface
   /**
    * Creates an HTTP client which handles JWT auth tokens with the Basiq API.
    *
-   * @return \App\BasiqApi\GuzzleWrapper\GuzzleClientWrapper
+   * @return \BasiqPhpApi\GuzzleWrapper\GuzzleClientWrapper
    *   The HTTP client configured with the base URI and headers for JWT auth.
    */
   public function createClient(string $baseUri): GuzzleClientWrapper {

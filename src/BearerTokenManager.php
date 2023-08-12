@@ -1,8 +1,8 @@
 <?php
 
-namespace BasiqPhpApi\BasiqApi;
+namespace BasiqPhpApi;
 
-use App\BasiqApi\GuzzleWrapper\GuzzleClientWrapper;
+use BasiqPhpApi\GuzzleWrapper\GuzzleClientWrapper;
 use GuzzleHttp\Exception\RequestException;
 
 /**
@@ -15,6 +15,8 @@ class BearerTokenManager {
 
   private GuzzleClientWrapper $basicAuthClient;
   private $tokenData = [];
+
+  private $tokenFilePath = __DIR__ . '/../token.json';
 
   public function __construct(GuzzleClientWrapper $basicAuthClient) {
     $this->basicAuthClient = $basicAuthClient;
@@ -89,10 +91,9 @@ class BearerTokenManager {
    * @return array The token data as an associative array.
    */
   private function readTokenDataFromFile() {
-    $tokenFilePath = __DIR__ . '/../../token.json';
 
-    if (file_exists($tokenFilePath)) {
-      $jsonContent = file_get_contents($tokenFilePath);
+    if (file_exists($this->tokenFilePath)) {
+      $jsonContent = file_get_contents($this->tokenFilePath);
       // Decode the JSON as an associative array.
       $tokenData = json_decode($jsonContent, TRUE);
     }
@@ -115,7 +116,6 @@ class BearerTokenManager {
    */
   private function saveTokenDataToFile($data) {
     $this->tokenData = $data;
-    $tokenFilePath = __DIR__ . '/../../token.json';
 
     // Calculate the expiration time.
     // @todo extract to a method.
@@ -124,9 +124,9 @@ class BearerTokenManager {
 
     $jsonData = json_encode($data, JSON_PRETTY_PRINT);
 
-    if (file_put_contents($tokenFilePath, $jsonData) === FALSE) {
+    if (file_put_contents($this->tokenFilePath, $jsonData) === FALSE) {
       // Handle the error if the file could not be written.
-      throw new \Exception('Failed to write to ' . $tokenFilePath);
+      throw new \Exception('Failed to write to ' . $this->tokenFilePath);
     }
 
     return $jsonData;

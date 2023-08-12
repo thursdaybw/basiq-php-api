@@ -29,14 +29,10 @@ $builder->addDefinitions([
     'BasiqPhpApi\BearerTokenManager' => \DI\create()
         ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BasicAuthClient')),
 
-    // BasiqApi Client
+    // BasiqApi Clienhttps://github.com/thursdaybw/basiq-php-apit
     'BasiqPhpApi\BasiqApi' => \DI\create()
         ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BearerTokenClient')),
 ]);
 
 $container = $builder->build();
 
-// Usage example
-$basiqApi = $container->get('BasiqPhpApi\BasiqApi');
-$user = $basiqApi->fetchUser(BASIC_TEST_USER_ID);
-print_r($user);

@@ -2,7 +2,7 @@
 
 namespace BasiqPhpApi;
 
-use App\BasiqApi\HttpClient\HttpClientWrapperInterface;
+use BasiqPhpApi\HttpClient\HttpClientWrapperInterface;
 
 /**
  * Class BasiqApi.
@@ -15,7 +15,7 @@ class BasiqApi {
   /**
    * BasiqApi constructor.
    *
-   * @param \App\BasiqApi\HttpClient\HttpClientWrapperInterface $httpClient
+   * @param \BasiqPhpApi\HttpClient\HttpClientWrapperInterface $httpClient
    *   The preconfigured client to talk to the BasiqApi with.
    */
   public function __construct(readonly HttpClientWrapperInterface $httpClient) {}

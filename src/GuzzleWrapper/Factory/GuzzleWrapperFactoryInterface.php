@@ -2,7 +2,7 @@
 
 namespace BasiqPhpApi\GuzzleWrapper\Factory;
 
-use App\BasiqApi\HttpClient\HttpClientWrapperInterface;
+use BasiqPhpApi\HttpClient\HttpClientWrapperInterface;
 
 /**
  * Provides and interface for GuzzleWrapperFactories.

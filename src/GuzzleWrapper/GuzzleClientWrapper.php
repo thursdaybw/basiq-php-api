@@ -2,7 +2,7 @@
 
 namespace BasiqPhpApi\GuzzleWrapper;
 
-use App\BasiqApi\HttpClient\HttpClientWrapperInterface;
+use BasiqPhpApi\HttpClient\HttpClientWrapperInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
@@ -34,33 +34,47 @@ class GuzzleClientWrapper implements HttpClientWrapperInterface {
    *   Optional headers to include with requests. */
   public function __construct(string $baseUri, array $headers = []) {
 
-    /*
-     * Use Monologger to configure a locger to pass on to guzzle.
-     */
-    $log = new Logger('guzzle');
-    $log->pushHandler(new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, Logger::DEBUG));
+      // @todo, find a way to pass this logger setup in or a flag to turn it on.
+      $logging = FALSE;
+      // @todo, find a way to pass this debug flag value in.
+      $debug = FALSE;
 
-    /*
-     * Stick the logger on the stack.
-     */
-    $stack = HandlerStack::create();
-    $stack->push(
-          Middleware::log(
-              $log,
-              new MessageFormatter(MessageFormatter::DEBUG)
-          )
-      );
+      if ($logging) {
 
-    /*
-     * Thanks to the logging that we just setup, we can set debug to  TRUE here
-     * and guzzle logs to PHP's error log. (ErrorLogHandler::OPERATING_SYSTEM).
-     */
-    $this->client = new Client([
-      'handler' => $stack,
-      'debug'   => FALSE,
-      'base_uri' => $baseUri,
-      'headers' => $headers,
-    ]);
+          /*
+           * Use Monologger to configure a locger to pass on to guzzle.
+           */
+          $log = new Logger('guzzle');
+          $log->pushHandler(new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, Logger::DEBUG));
+
+          /*
+           * Stick the logger on the stack.
+           */
+          $stack = HandlerStack::create();
+          $stack->push(
+              Middleware::log(
+                  $log,
+                  new MessageFormatter(MessageFormatter::DEBUG)
+              )
+          );
+
+      }
+
+      $client_options = [
+          'debug'   => ($logging && $debug),
+          'base_uri' => $baseUri,
+          'headers' => $headers,
+      ];
+
+      if ($logging) {
+          $client_options['handler'] = $stack;
+      }
+
+      /*
+       * Thanks to the logging that we just setup, we can set debug to  TRUE here
+       * and guzzle logs to PHP's error log. (ErrorLogHandler::OPERATING_SYSTEM).
+       */
+    $this->client = new Client($client_options);
 
     $this->response = NULL;
   }
