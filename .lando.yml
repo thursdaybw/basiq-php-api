@@ -1,0 +1,16 @@
+name: basiq-php-api
+services:
+  myservice:
+    type: php:8.1
+    via: cli
+    # command: php /app/src/artisan horizon
+    xdebug: "debug,develop"
+    composer_version: 2
+    overrides:
+      environment:
+        XDEBUG_CONFIG: "idekey=BASIQPHPAPIPHPSTORM discover_client_host=0 client_host=localhost"
+tooling:
+  php:
+    service: myservice
+  composer:
+    service: myservice
