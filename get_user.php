@@ -1,8 +1,9 @@
 <?php
 
-use BasiqPhpApi\ContainerFactory;
-
 require 'vendor/autoload.php';
+
+use BasiqPhpApi\BasiqApiClient;
+use BasiqPhpApi\ContainerFactory;
 
 /*
  * You will need to create the file. or just create you own inline $settings array.
@@ -12,9 +13,10 @@ $containerFactory = new ContainerFactory(require 'settings.php');
 
 $container = $containerFactory->createContainer();
 
-// Now you can use the container to get your services
-$basiq_api = $container->get('BasiqPhpApi\Api');
+$client = $container->get(BasiqApiClient::class);
 
-// And use the BasiqPhpApi\Api services to fetch yo'self a user.
-$user = $basiq_api->fetchUser($container->get('user_id'));
-print_r($user);
+$dataEndpoint = $client->getEndpoint('data');
+
+$data = $dataEndpoint->fetchUser($container->get('user_id'));
+
+print_r($data);

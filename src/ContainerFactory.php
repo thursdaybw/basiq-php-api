@@ -3,6 +3,8 @@
 // ContainerFactory.php
 namespace BasiqPhpApi;
 
+use BasiqPhpApi\Endpoint\DataEndpoint;
+use BasiqPhpApi\Endpoint\Registry\BasiqApiRegistry;
 use DI\ContainerBuilder;
 
 class ContainerFactory
@@ -50,10 +52,41 @@ class ContainerFactory
             'BasiqPhpApi\BearerTokenManager' => \DI\create()
                 ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BasicAuthClient')),
 
-            // BasiqApi Clienhttps://github.com/thursdaybw/basiq-php-apit
-            'BasiqPhpApi\Api' => \DI\create()
+            // BasiqApi Client.
+            'BasiqPhpApi\BasiqApiClient' => \DI\create()
+                ->constructor(\DI\get(BasiqApiRegistry::class)),
+                //->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BearerTokenClient')),
+
+            //BasiqApiRegistry::class => \DI\create()
+             //   ->constructor($builder),
+
+
+            BasiqApiRegistry::class => function ($container) {
+                $registry = new BasiqApiRegistry($container);
+                $registry->registerEndpoint('data', DataEndpoint::class);
+                return $registry;
+            },
+
+            DataEndpoint::class => \DI\autowire()
                 ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BearerTokenClient')),
+
         ]);
+
+
+       /*
+            DataEndpoint::class => \DI\autowire()
+            ->constructor(\DI\get('BasiqPhpApi\BasiqApiClient')),
+
+        */
+
+/*
+        'httpClient' => function () {
+            // Replace with the actual logic to create the HTTP client
+            return new HttpClient(); // Your specific HTTP client class
+        },
+*/
+
+
 
         return $builder->build();
     }

@@ -89,7 +89,7 @@ class GuzzleClientWrapper implements HttpClientWrapperInterface {
    *
    * @return array The response body as an associative array.
    */
-  public function get(string $url, array $query_parameters = NULL) {
+  public function get(string $url, array $query_parameters = NULL): array {
     $options = [
       'query' => $query_string_data ?? NULL,
     ];
@@ -107,7 +107,7 @@ class GuzzleClientWrapper implements HttpClientWrapperInterface {
    *
    * @return array The response body as an associative array.
    */
-  public function post(string $url, array $form_params = NULL) {
+  public function post(string $url, array $form_params = NULL): array {
     $options = [
       'form_params' => $form_params ?? NULL,
     ];
@@ -125,9 +125,10 @@ class GuzzleClientWrapper implements HttpClientWrapperInterface {
    * @param ?array $options
    *   Optional options to include with the request.
    *
-   * @return array The response body as an associative array.
+   * @return array
+   *   The response body as an associative array.
    */
-  public function request(string $method, string $url, array $options = NULL) {
+  public function request(string $method, string $url, array $options = NULL): array {
 
     try {
       if ($options) {
@@ -148,14 +149,14 @@ class GuzzleClientWrapper implements HttpClientWrapperInterface {
   /**
    * Retrieves the status code from the last response.
    *
-   * @return int|bool The status code, or FALSE if no response is available.
+   * @return ?int The status code, or FALSE if no response is available.
    */
-  public function getStatusCode() {
+  public function getStatusCode(): ?int {
     if (!empty($this->response)) {
       return $this->response->getStatusCode();
     }
     else {
-      return FALSE;
+      return NULL;
     }
   }
 
