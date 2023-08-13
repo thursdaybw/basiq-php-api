@@ -3,8 +3,10 @@
 // ContainerFactory.php
 namespace BasiqPhpApi;
 
-use BasiqPhpApi\Endpoint\DataEndpoint;
+use BasiqPhpApi\Endpoint\UserEndpoint;
 use BasiqPhpApi\Endpoint\Registry\BasiqApiRegistry;
+use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory;
+use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory;
 use DI\ContainerBuilder;
 
 class ContainerFactory
@@ -18,75 +20,34 @@ class ContainerFactory
 
         $builder = new ContainerBuilder();
 
-        // Use the settings from the constructor
-        $settings = $this->settings;
+        // Bearer Token Client
+        $baseUri = $this->settings['base_uri'];
+        $api_key = $this->settings['api_key'];
 
         $builder->addDefinitions([
             // Parameters
-            'base_uri' => $settings['base_uri'],
-            'user_id' => $settings['user_id'],
-            'api_key' => $settings['api_key'],
+            'user_id' => $this->settings['user_id'],
 
-            // Guzzle Factories
-            'BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory' => \DI\create()
-                // Pass API Key.
-                ->constructor(\DI\get('api_key')),
+            // Guzzle Wrapper Factory.
+            GuzzleWrapperWithAuthBasicFactory::class => \DI\create()
+                ->constructor($api_key),
 
-            'BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory' => \DI\create()
-                // Pass BearerTokenManager as token handler
-                ->constructor(\DI\get('BasiqPhpApi\BearerTokenManager')),
+            // Bearer Token Manager.
+            BearerTokenManager::class => \DI\create()
+                ->constructor(
+                    function ($container) use ($baseUri) {
+                        return $container->get(GuzzleWrapperWithAuthBasicFactory::class)->createClient($baseUri);
+                    }
+                ),
 
-            // Basic Auth Client
-            'BasiqPhpApi\GuzzleWrapper\BasicAuthClient' => \DI\factory(function ($container) {
-                return $container->get('BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory')
-                    ->createClient($container->get('base_uri'));
-            }),
-
-            // Bearer Token Client
-            'BasiqPhpApi\GuzzleWrapper\BearerTokenClient' => \DI\factory(function ($container) {
-                return $container->get('BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory')
-                    ->createClient($container->get('base_uri'));
-            }),
-
-            // Bearer Token Manager
-            'BasiqPhpApi\BearerTokenManager' => \DI\create()
-                ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BasicAuthClient')),
-
-            // BasiqApi Client.
-            'BasiqPhpApi\BasiqApiClient' => \DI\create()
-                ->constructor(\DI\get(BasiqApiRegistry::class)),
-                //->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BearerTokenClient')),
-
-            //BasiqApiRegistry::class => \DI\create()
-             //   ->constructor($builder),
-
-
-            BasiqApiRegistry::class => function ($container) {
-                $registry = new BasiqApiRegistry($container);
-                $registry->registerEndpoint('data', DataEndpoint::class);
-                return $registry;
-            },
-
-            DataEndpoint::class => \DI\autowire()
-                ->constructor(\DI\get('BasiqPhpApi\GuzzleWrapper\BearerTokenClient')),
+            // Auto-discover classes in the BasiqPhpApi\Endpoint namespace.
+            'BasiqPhpApi\Endpoint\*' => \DI\create()->constructor(
+                function ($container) use ($baseUri) {
+                    return $container->get(GuzzleWrapperWithAuthBearerTokenFactory::class)->createClient($baseUri);
+                }
+            ),
 
         ]);
-
-
-       /*
-            DataEndpoint::class => \DI\autowire()
-            ->constructor(\DI\get('BasiqPhpApi\BasiqApiClient')),
-
-        */
-
-/*
-        'httpClient' => function () {
-            // Replace with the actual logic to create the HTTP client
-            return new HttpClient(); // Your specific HTTP client class
-        },
-*/
-
-
 
         return $builder->build();
     }

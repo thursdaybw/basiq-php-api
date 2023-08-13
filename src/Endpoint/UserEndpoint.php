@@ -2,7 +2,7 @@
 
 namespace BasiqPhpApi\Endpoint;
 
-class DataEndpoint extends BaseEndpoint {
+class UserEndpoint extends BaseEndpoint {
 
     /**
      * Fetches user information from the Basiq API.
@@ -56,5 +56,4 @@ class DataEndpoint extends BaseEndpoint {
     public function fetchUserConsents(string $userId): ?array {
         return $this->request('GET', "/users/{$userId}/consents");
     }
-
 }
