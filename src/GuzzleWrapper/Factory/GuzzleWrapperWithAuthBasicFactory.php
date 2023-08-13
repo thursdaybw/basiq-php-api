@@ -12,9 +12,7 @@ use BasiqPhpApi\GuzzleWrapper\GuzzleClientWrapper;
  */
 class GuzzleWrapperWithAuthBasicFactory implements GuzzleWrapperFactoryInterface {
 
-    public function __construct(string $apiKey) {
-        $this->apiKey = $apiKey;
-    }
+    public function __construct(readonly string $apiKey, readonly string $baseUri) {}
 
   /**
    * Creates an HTTP client which handles JWT auth tokens with the Basiq API.
@@ -22,7 +20,7 @@ class GuzzleWrapperWithAuthBasicFactory implements GuzzleWrapperFactoryInterface
    * @return \BasiqPhpApi\GuzzleWrapper\GuzzleClientWrapper
    *   The HTTP client configured with the base URI and headers for JWT auth.
    */
-  public function createClient(string $baseUri): GuzzleClientWrapper {
+  public function createClient(): GuzzleClientWrapper {
     $headers = [
       'accept' => 'application/json',
       'authorization' => 'Basic ' . $this->apiKey,
@@ -30,7 +28,7 @@ class GuzzleWrapperWithAuthBasicFactory implements GuzzleWrapperFactoryInterface
       'content-type' => 'application/x-www-form-urlencoded',
     ];
 
-    return new GuzzleClientWrapper($baseUri, $headers);
+    return new GuzzleClientWrapper($this->baseUri, $headers);
   }
 
 }

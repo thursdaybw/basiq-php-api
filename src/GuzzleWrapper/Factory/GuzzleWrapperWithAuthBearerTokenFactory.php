@@ -20,7 +20,7 @@ class GuzzleWrapperWithAuthBearerTokenFactory implements GuzzleWrapperFactoryInt
    * @param \BasiqPhpApi\BearerTokenManager $tokenHandler
    *   Handler for managing JWT tokens for Basiq API authentication.
    */
-  public function __construct(readonly BearerTokenManager $tokenHandler) {}
+  public function __construct(readonly BearerTokenManager $tokenHandler, readonly string $baseUri) {}
 
   /**
    * Creates an HTTP client for interacting with the Basiq API.
@@ -28,7 +28,7 @@ class GuzzleWrapperWithAuthBearerTokenFactory implements GuzzleWrapperFactoryInt
    * @return \BasiqPhpApi\HttpClient\HttpClientWrapperInterface
    *   The GuzzleWrapper configured with headers for Basiq API requests.
    */
-  public function createClient(string $baseUri): HttpClientWrapperInterface {
+  public function createClient(): HttpClientWrapperInterface {
 
     // getToken will take care of getting the current
     // or on the account of expiry, or absence, make the API
@@ -41,7 +41,7 @@ class GuzzleWrapperWithAuthBearerTokenFactory implements GuzzleWrapperFactoryInt
       'basiq-version' => '3.0',
     ];
 
-    return new GuzzleClientWrapper($baseUri, $headers);
+    return new GuzzleClientWrapper($this->baseUri, $headers);
   }
 
 }

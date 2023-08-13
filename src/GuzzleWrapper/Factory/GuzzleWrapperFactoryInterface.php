@@ -20,6 +20,6 @@ use BasiqPhpApi\HttpClient\HttpClientWrapperInterface;
  */
 interface GuzzleWrapperFactoryInterface {
 
-  public function createClient(string $baseUri): HttpClientWrapperInterface;
+  public function createClient(): HttpClientWrapperInterface;
 
 }

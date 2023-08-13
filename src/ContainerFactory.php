@@ -1,10 +1,7 @@
 <?php
 
-// ContainerFactory.php
 namespace BasiqPhpApi;
 
-use BasiqPhpApi\Endpoint\UserEndpoint;
-use BasiqPhpApi\Endpoint\Registry\BasiqApiRegistry;
 use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory;
 use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory;
 use DI\ContainerBuilder;
@@ -30,22 +27,29 @@ class ContainerFactory
 
             // Guzzle Wrapper Factory.
             GuzzleWrapperWithAuthBasicFactory::class => \DI\create()
-                ->constructor($api_key),
+                ->constructor($api_key, $baseUri),
+
+            GuzzleWrapperWithAuthBearerTokenFactory::class => \DI\create()
+                ->constructor(
+                    function ($container) use ($baseUri) {
+                        return $container->get(BearerTokenManager::class);
+                    },
+                    $baseUri
+                ),
 
             // Bearer Token Manager.
             BearerTokenManager::class => \DI\create()
-                ->constructor(
-                    function ($container) use ($baseUri) {
-                        return $container->get(GuzzleWrapperWithAuthBasicFactory::class)->createClient($baseUri);
-                    }
-                ),
+                ->constructor(function ($container) use ($baseUri) {
+                    return $container->get(GuzzleWrapperWithAuthBasicFactory::class)->createClient($baseUri);
+                }),
+
 
             // Auto-discover classes in the BasiqPhpApi\Endpoint namespace.
-            'BasiqPhpApi\Endpoint\*' => \DI\create()->constructor(
+/*            'BasiqPhpApi\Endpoint\*' => \DI\create()->constructor(
                 function ($container) use ($baseUri) {
                     return $container->get(GuzzleWrapperWithAuthBearerTokenFactory::class)->createClient($baseUri);
                 }
-            ),
+            ),*/
 
         ]);
 

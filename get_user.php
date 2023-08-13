@@ -5,6 +5,7 @@ require 'vendor/autoload.php';
 use BasiqPhpApi\BasiqApiClient;
 use BasiqPhpApi\ContainerFactory;
 use BasiqPhpApi\Endpoint\UserEndpoint;
+use BasiqPhpApi\PluginManager;
 
 /*
  * You will need to create the file. or just create you own inline $settings array.
@@ -14,7 +15,9 @@ $containerFactory = new ContainerFactory(require 'settings.php');
 
 $container = $containerFactory->createContainer();
 
-$client = $container->get(UserEndpoint::class);
+$plugin_manager = $container->get(PluginManager::class);
+
+$client = $plugin_manager->getPlugin('UserEndpoint');
 
 $data = $client->fetchUser($container->get('user_id'));
 

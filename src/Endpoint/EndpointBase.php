@@ -4,7 +4,7 @@ namespace BasiqPhpApi\Endpoint;
 
 use BasiqPhpApi\HttpClient\HttpClientWrapperInterface;
 
-abstract class BaseEndpoint {
+abstract class EndpointBase {
 
     protected $httpClient;
 

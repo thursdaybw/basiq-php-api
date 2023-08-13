@@ -18,6 +18,8 @@ use Monolog\Logger;
  * interface for making HTTP requests using Guzzle.
  *
  * In handles a extra guzzle configuration such as enabling logging.
+ *
+ * @todo pass the base URI into here somehow instead of going via the factories.
  */
 class GuzzleClientWrapper implements HttpClientWrapperInterface {
 

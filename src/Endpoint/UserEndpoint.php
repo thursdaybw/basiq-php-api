@@ -2,7 +2,7 @@
 
 namespace BasiqPhpApi\Endpoint;
 
-class UserEndpoint extends BaseEndpoint {
+class UserEndpoint extends EndpointBase implements EndpointInterface {
 
     /**
      * Fetches user information from the Basiq API.
@@ -51,7 +51,7 @@ class UserEndpoint extends BaseEndpoint {
      * @param string $userId
      *   The ID of the user whose consents are to be fetched.
      *
-     * @return array An array of consent objects.
+     * @return ?array An array of consent objects.
      */
     public function fetchUserConsents(string $userId): ?array {
         return $this->request('GET', "/users/{$userId}/consents");
