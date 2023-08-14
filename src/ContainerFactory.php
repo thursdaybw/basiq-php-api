@@ -2,57 +2,61 @@
 
 namespace BasiqPhpApi;
 
+use BasiqPhpApi\Cache\Storage\FileCache;
 use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory;
 use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory;
 use DI\ContainerBuilder;
+use Psr\Container\ContainerInterface;
+use function DI\create;
 
 class ContainerFactory
 {
 
-    public function __construct(array $settings) {
-        $this->settings = $settings;
-    }
+  public function __construct(array $settings) {
+    $this->settings = $settings;
+  }
 
-    public function createContainer() {
+  public function createContainer() {
 
-        $builder = new ContainerBuilder();
+    $builder = new ContainerBuilder();
 
-        // Bearer Token Client
-        $baseUri = $this->settings['base_uri'];
-        $api_key = $this->settings['api_key'];
+    // Bearer Token Client
+    $baseUri = $this->settings['base_uri'];
+    $api_key = $this->settings['api_key'];
+    // Configure the cache directory
+    $cacheDir = $this->settings['cache_dir'] ?? __DIR__ . '/../.cache';
 
-        $builder->addDefinitions([
-            // Parameters
-            'user_id' => $this->settings['user_id'],
+    $builder->addDefinitions([
+      // Parameters
+      'user_id' => $this->settings['user_id'],
 
-            // Guzzle Wrapper Factory.
-            GuzzleWrapperWithAuthBasicFactory::class => \DI\create()
-                ->constructor($api_key, $baseUri),
+      // Guzzle Wrapper Factory.
+      GuzzleWrapperWithAuthBasicFactory::class => \DI\create()
+        ->constructor($api_key, $baseUri),
 
-            GuzzleWrapperWithAuthBearerTokenFactory::class => \DI\create()
-                ->constructor(
-                    function ($container) use ($baseUri) {
-                        return $container->get(BearerTokenManager::class);
-                    },
-                    $baseUri
-                ),
+      GuzzleWrapperWithAuthBearerTokenFactory::class => \DI\create()
+        ->constructor(
+          function ($container) {
+            return $container->get(BearerTokenManager::class);
+          },
+          $baseUri
+        ),
 
-            // Bearer Token Manager.
-            BearerTokenManager::class => \DI\create()
-                ->constructor(function ($container) use ($baseUri) {
-                    return $container->get(GuzzleWrapperWithAuthBasicFactory::class)->createClient($baseUri);
-                }),
+      // FileCache
+      FileCache::class => \DI\create()
+        ->constructor($cacheDir),
 
+      // BearerTokenManager with FileCache by default
+      BearerTokenManager::class => \DI\factory(
+        function (ContainerInterface $container) {
+          $basicAuthClient = $container->get(GuzzleWrapperWithAuthBasicFactory::class)->createClient();
+          $cache = $container->get(FileCache::class);
+          return new BearerTokenManager($basicAuthClient, $cache);
+        }
+      ),
 
-            // Auto-discover classes in the BasiqPhpApi\Endpoint namespace.
-/*            'BasiqPhpApi\Endpoint\*' => \DI\create()->constructor(
-                function ($container) use ($baseUri) {
-                    return $container->get(GuzzleWrapperWithAuthBearerTokenFactory::class)->createClient($baseUri);
-                }
-            ),*/
+    ]);
 
-        ]);
-
-        return $builder->build();
-    }
+    return $builder->build();
+  }
 }

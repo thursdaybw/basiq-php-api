@@ -2,6 +2,7 @@
 
 namespace BasiqPhpApi;
 
+use BasiqPhpApi\Cache\CacheInterface;
 use BasiqPhpApi\GuzzleWrapper\GuzzleClientWrapper;
 use GuzzleHttp\Exception\RequestException;
 
@@ -13,28 +14,29 @@ use GuzzleHttp\Exception\RequestException;
  */
 class BearerTokenManager {
 
-  private GuzzleClientWrapper $basicAuthClient;
   private $tokenData = [];
 
-  private $tokenFilePath = __DIR__ . '/../token.json';
+  public function __construct(
+    readonly GuzzleClientWrapper $basicAuthClient,
+    readonly CacheInterface $cache,
+  ) {
 
-  public function __construct(GuzzleClientWrapper $basicAuthClient) {
-    $this->basicAuthClient = $basicAuthClient;
   }
-
   /**
    * Retrieves the current token or fetches a new one if expired or absent.
    *
    * @return string The access token for Basiq API requests.
    */
   public function getToken() {
-    $this->tokenData = $this->readTokenDataFromFile();
+
+    $this->tokenData = $this->cache->getItem('basiq_token');
 
     if (empty($this->tokenData) || $this->isTokenExpired()) {
       $this->fetchNewToken();
     }
 
     return $this->tokenData['access_token'];
+
   }
 
   /**
@@ -43,14 +45,7 @@ class BearerTokenManager {
    * @return bool TRUE if the token is expired, FALSE otherwise.
    */
   private function isTokenExpired() {
-    $expires_at = $this->tokenData['expires_at'];
-
-    if ($expires_at <= time()) {
-      return TRUE;
-    }
-    else {
-      return FALSE;
-    }
+    return $this->tokenData['expires_at'] <= time();
   }
 
   /**
@@ -60,21 +55,23 @@ class BearerTokenManager {
 
     try {
       $form_params = [
-            // Use SERVER_ACCESS for full access.
+        // Use SERVER_ACCESS for full access.
         'scope' => 'SERVER_ACCESS',
       ];
 
-      $data = $this->basicAuthClient->post("/token", $form_params);
-
-      $last_request_headers = $this->basicAuthClient->getResponseHeaders();
+      $this->tokenData = $this->basicAuthClient->post("/token", $form_params);
 
       $statusCode = $this->basicAuthClient->getStatusCode();
 
       if ($statusCode === 200) {
-        $this->saveTokenDataToFile($data);
+        // Calculate the expiration time.
+        // @todo extract to a method.
+        $this->tokenData['expires_at'] = time() + $this->tokenData['expires_in'];
+        unset($this->tokenData['expires_in']);
+        $this->cache->setItem('basiq_token', $this->tokenData);
       }
       else {
-        // Handle other status codes as needed
+        // @todo Handle other status codes as needed
         // You may log the error or throw an exception.
       }
     }

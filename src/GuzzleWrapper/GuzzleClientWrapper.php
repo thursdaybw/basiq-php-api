@@ -41,7 +41,8 @@ class GuzzleClientWrapper implements HttpClientWrapperInterface {
       $logging = FALSE;
       // @todo, find a way to pass this debug flag value in.
       $debug = FALSE;
-
+      // @todo Monlog appears to provide a LoggerAwareTrait and you can set getlog
+      //    and
       if ($logging) {
 
           /*
