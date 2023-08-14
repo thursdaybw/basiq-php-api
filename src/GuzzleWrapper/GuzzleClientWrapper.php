@@ -37,6 +37,7 @@ class GuzzleClientWrapper implements HttpClientWrapperInterface {
   public function __construct(string $baseUri, array $headers = []) {
 
       // @todo, find a way to pass this logger setup in or a flag to turn it on.
+      //   - going to have to build a settings manager probably.
       $logging = FALSE;
       // @todo, find a way to pass this debug flag value in.
       $debug = FALSE;
@@ -93,7 +94,7 @@ class GuzzleClientWrapper implements HttpClientWrapperInterface {
    */
   public function get(string $url, array $query_parameters = NULL): array {
     $options = [
-      'query' => $query_string_data ?? NULL,
+      'query' => $query_parameters ?? NULL,
     ];
 
     return $this->request('GET', $url, $options);
