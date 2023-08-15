@@ -2,7 +2,6 @@
 
 namespace BasiqPhpApi;
 
-use BasiqPhpApi\Cache\Storage\FileCache;
 use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory;
 use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory;
 use Cache\Adapter\Filesystem\FilesystemCachePool;
@@ -10,7 +9,6 @@ use DI\ContainerBuilder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Psr\Container\ContainerInterface;
-use function DI\create;
 
 class ContainerFactory
 {

@@ -7,7 +7,7 @@ services:
     composer_version: 2
     overrides:
       environment:
-        XDEBUG_CONFIG: "idekey=PHPSTORM serverName=BASIQPHPAPIPHPSTORM discover_client_host=0 client_host=192.168.0.245"
+        XDEBUG_CONFIG: "idekey=PHPSTORM serverName=BASIQPHPAPIPHPSTORM discover_client_host=0 client_host=192.168.0.16"
     run_as_root:
       # Install netcat package to provide the nc command.
       # This way we can check that we can connect to the  XDEBUG client port using this command:
