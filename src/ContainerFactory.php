@@ -5,7 +5,10 @@ namespace BasiqPhpApi;
 use BasiqPhpApi\Cache\Storage\FileCache;
 use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBasicFactory;
 use BasiqPhpApi\GuzzleWrapper\Factory\GuzzleWrapperWithAuthBearerTokenFactory;
+use Cache\Adapter\Filesystem\FilesystemCachePool;
 use DI\ContainerBuilder;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Psr\Container\ContainerInterface;
 use function DI\create;
 
@@ -42,15 +45,15 @@ class ContainerFactory
           $baseUri
         ),
 
-      // FileCache
-      FileCache::class => \DI\create()
-        ->constructor($cacheDir),
+      // Filesystem Cache
+      FilesystemCachePool::class => \DI\create()
+        ->constructor(new Filesystem(new Local($cacheDir))),
 
-      // BearerTokenManager with FileCache by default
+      // BearerTokenManager with FilesystemCache by default
       BearerTokenManager::class => \DI\factory(
         function (ContainerInterface $container) {
           $basicAuthClient = $container->get(GuzzleWrapperWithAuthBasicFactory::class)->createClient();
-          $cache = $container->get(FileCache::class);
+          $cache = $container->get(FilesystemCachePool::class);
           return new BearerTokenManager($basicAuthClient, $cache);
         }
       ),
