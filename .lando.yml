@@ -12,9 +12,15 @@ services:
       # Install netcat package to provide the nc command.
       # This way we can check that we can connect to the  XDEBUG client port using this command:
       # `nc -zv <your host IP> <the client xdebug port> && echo "Port is open" || echo "Port is closed"`
-      - apt-get update -y && apt-get install -y netcat
+      - apt-get update -y && apt-get install -y default-jdk netcat
+      - curl -o /usr/local/bin/openapi-generator-cli.jar https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.6.0/openapi-generator-cli-6.6.0.jar
+      - echo '#!/bin/sh\njava -jar /usr/local/bin/openapi-generator-cli.jar "$@"' > /usr/local/bin/openapi-generator && chmod +x /usr/local/bin/openapi-generator
 tooling:
   php:
     service: myservice
   composer:
     service: myservice
+  # eg `lando openapi-generator generate -i /app/core.yml -g php -o /app/core.php`
+  openapi-generator:
+    service: myservice
+    cmd: openapi-generator
