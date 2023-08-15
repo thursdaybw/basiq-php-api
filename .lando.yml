@@ -15,6 +15,10 @@ services:
       - apt-get update -y && apt-get install -y default-jdk netcat
       - curl -o /usr/local/bin/openapi-generator-cli.jar https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.6.0/openapi-generator-cli-6.6.0.jar
       - echo '#!/bin/sh\njava -jar /usr/local/bin/openapi-generator-cli.jar "$@"' > /usr/local/bin/openapi-generator && chmod +x /usr/local/bin/openapi-generator
+  node:
+    type: node:14
+    globals:
+      swagger-cli: latest
 tooling:
   php:
     service: myservice
@@ -24,3 +28,9 @@ tooling:
   openapi-generator:
     service: myservice
     cmd: openapi-generator
+  swagger:
+    service: node
+    cmd: swagger-cli
+  bundle-swagger:
+    service: node
+    cmd: /app/bundle-swagger.sh

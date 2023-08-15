@@ -21,9 +21,9 @@ class ContainerFactory
 
     $builder = new ContainerBuilder();
 
-    // Bearer Token Client
     $baseUri = $this->settings['base_uri'];
     $api_key = $this->settings['api_key'];
+
     // Configure the cache directory
     $cacheDir = $this->settings['cache_dir'] ?? __DIR__ . '/../.cache';
 
